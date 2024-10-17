@@ -1,19 +1,16 @@
 <?php
-session_start();
-require '../db/connect.php'; // Koneksi database
-require '../controllers/UsersController.php'; // Controller pengguna
+require '../db/connect.php'; 
+require '../controllers/SessionController.php'; 
+require '../controllers/UsersController.php'; 
 
+use Backend\Controllers\SessionController;
 use Backend\Controllers\UsersController;
 
-// Instansiasi UsersController
-$usersController = new UsersController($conn);
+SessionController::checkAccess("users");
 
-// Ambil data pengguna
+$usersController = new UsersController($conn);
 $user = $usersController->getUserData();
 
-if ($user) {
-    $nim = $user['user_nim']; // Ambil NIM dari hasil query
-}
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +21,7 @@ if ($user) {
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Selamat datang di Dashboard, <?= htmlspecialchars($nim) ?></h1>
+    <h1>Selamat datang di Dashboard, <?= htmlspecialchars( $user['user_nim'] ) ?></h1>
+    <a href="logout.php">logout</a>
 </body>
 </html>

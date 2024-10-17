@@ -2,7 +2,7 @@
 
 namespace Backend\Controllers;
 
-require_once '../models/User.php'; // Include model
+require_once __DIR__ . '/../models/User.php'; // Include model
 
 use Backend\Models\User;
 
@@ -40,11 +40,10 @@ class AuthController
                     header('Location: dashboard.php');
                     exit();
                 } else {
-                    // Password salah
-                    echo "Password salah.";
+                    echo "USERNAME DAN PASSWORD SALAH";
                 }
             } else {
-                echo "Pengguna dengan NIM tersebut tidak ditemukan.";
+                echo "USERNAME DAN PASSWORD SALAH";
             }
         }
     }

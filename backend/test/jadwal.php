@@ -1,10 +1,21 @@
-<?php session_start(); ?>
-<?php $pageName = "user-jadwal"; ?>
-<?php $pageAccess = "users"; ?>
-<?php include ('../db/connect.php'); ?>
-<?php include ('../controllers/AuthController.php'); ?>
-<?php include ('../controllers/SessionController.php'); ?>
-<?php include ('../controllers/JadwalController.php'); ?>
+<?php
+    require '../db/connect.php'; 
+    require '../controllers/SessionController.php'; 
+    require '../controllers/JadwalController.php'; 
+    
+    use Backend\Controllers\SessionController;
+    use Backend\Controllers\JadwalController;
+    
+    
+    SessionController::checkAccess("users");
+    
+    $jadwalController = new JadwalController($conn);
+    $jadwalControllerResult = $jadwalController->getTableJadwal();
+    
+    $jadwalControllerResultData = $jadwalControllerResult['getTableJadwaldata']; 
+    $jadwalControllerResultCount = $jadwalControllerResult['getTableJadwalCount']; 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,5 +26,16 @@
 </head>
 <body>
     <h1>Jadwal</h1>
+
+    <?php if ($jadwalControllerResultCount > 0): ?>
+        <ul>
+            <?php foreach ($jadwalControllerResultData as $jadwal): ?>
+                <li><?= $jadwal['hari_mata_kuliah'] . " - " . $jadwal['waktu_mata_kuliah'] ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Tidak ada jadwal tersedia.</p>
+    <?php endif; ?>
+    
 </body>
 </html>

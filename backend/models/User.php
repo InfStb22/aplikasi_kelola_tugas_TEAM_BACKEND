@@ -41,4 +41,13 @@ class User
 
         return null;
     }
+
+    public function updatePassword($userId, $passwordNew)
+    {
+        $query = "UPDATE " . $this->table . " SET user_password = ? WHERE user_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $hashed_password = password_hash($passwordNew, PASSWORD_DEFAULT); // Hash password baru
+        $stmt->bind_param('si', $hashed_password, $userId); // 'si' untuk string dan integer
+        return $stmt->execute(); // Return true jika update berhasil
+    }
 }

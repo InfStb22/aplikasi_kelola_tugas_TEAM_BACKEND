@@ -1,19 +1,41 @@
-<?php session_start(); ?>
-<?php $pageName = "user-tugas"; ?>
-<?php $pageAccess = "users"; ?>
-<?php include ('../../db/connect.php'); ?>
-<?php include ('../../controllers/AuthController.php'); ?>
-<?php include ('../../controllers/SessionController.php'); ?>
-<?php include ('../../controllers/TugasController.php'); ?>
+<?php
+    require '../db/connect.php'; 
+    require '../controllers/SessionController.php'; 
+    require '../controllers/TugasController.php'; 
+    
+    use Backend\Controllers\SessionController;
+    use Backend\Controllers\TugasController;
+    
+    
+    SessionController::checkAccess("users");
+    
+    $tugasController = new TugasController($conn);
+    $tugasControllerResult = $tugasController->getTabletugas();
+    
+    $tugasControllerResultData = $tugasControllerResult['getTableTugasdata']; 
+    $tugasControllerResultCount = $tugasControllerResult['getTableTugasCount']; 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tugas</title>
+    <title>tugas</title>
 </head>
 <body>
-    <h1>TUGAS</h1>
+    <h1>tugas</h1>
+
+    <?php if ($tugasControllerResultCount > 0): ?>
+        <ul>
+            <?php foreach ($tugasControllerResultData as $tugas): ?>
+                <li>tugas ada</li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <p>Tidak ada Tugas</p>
+    <?php endif; ?>
+    
 </body>
 </html>
