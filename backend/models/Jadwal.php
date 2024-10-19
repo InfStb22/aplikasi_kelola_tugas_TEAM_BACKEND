@@ -19,12 +19,23 @@ class Jadwal
         $stmt->execute();
         $result = $stmt->get_result();
 
+        $hariMap = [
+            1 => 'Senin',
+            2 => 'Selasa',
+            3 => 'Rabu',
+            4 => 'Kamis',
+            5 => 'Jumat',
+            6 => 'Sabtu',
+            7 => 'Minggu'
+        ];
+
         $getTableJadwalCount = 0;
         $getTableJadwalData = [];
         if ($result->num_rows > 0) {
             $getTableJadwalCount = 1;
             while ($row = $result->fetch_assoc()) {
-                $getTableJadwal[] = $row;
+                $row['hari_mata_kuliah'] = $hariMap[$row['hari_mata_kuliah']] ?? 'Unknown';
+                $getTableJadwalData[] = $row;
             }
         } else {
             $getTableJadwalCount = 0;

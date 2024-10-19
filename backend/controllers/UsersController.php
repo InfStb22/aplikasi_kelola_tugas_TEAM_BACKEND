@@ -18,11 +18,11 @@ class UsersController
     public function getUserData()
     {
         if (!isset($_SESSION)) {
-            session_start(); // Pastikan session dimulai
+            session_start(); 
         }
 
         if (!isset($_SESSION['users'])) {
-            // Jika session user tidak ada, redirect ke halaman login
+            
             header('Location: login.php');
             exit();
         }
@@ -49,45 +49,50 @@ class UsersController
     public function gantiUserPassword()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ubah_password'])) {
-            
+
             if (!isset($_SESSION)) {
                 header('Location: login.php');
                 exit();
             }
 
-            $userId = $_SESSION['users']; // Ambil user ID dari session
+            $userId = $_SESSION['users']; 
             $passwordOld = $_POST['password_old'];
             $passwordNew = $_POST['password_new'];
+            $passwordNewConfirm = $_POST['password_new_confirm'];
 
-            // Validasi input dasar
+            
             if (empty($passwordOld) || empty($passwordNew)) {
                 die("Password tidak boleh kosong.");
             }
 
-            // Instansiasi model User
+            
             $userModel = new User($this->conn);
             $user = $userModel->getUserById($userId);
 
             if ($user) {
                 $hashed_password = $user['user_password'];
 
-                // Verifikasi password lama
-                if (password_verify($passwordOld, $hashed_password)) {
-                    // Cek apakah password baru sama dengan password lama
-                    if (!password_verify($passwordNew, $hashed_password)) {
-                        // Update password jika valid
-                        $updateSuccess = $userModel->updatePassword($userId, $passwordNew);
+                if ($passwordNew == $passwordNewConfirm){
+                
+                    if (password_verify($passwordOld, $hashed_password)) {
                         
-                        if ($updateSuccess) {
-                            echo "Password berhasil diubah.";
+                        if (!password_verify($passwordNew, $hashed_password)) {
+                            
+                            $updateSuccess = $userModel->updatePassword($userId, $passwordNew);
+                            
+                            if ($updateSuccess) {
+                                echo "Password berhasil diubah.";
+                            } else {
+                                echo "Gagal mengubah password.";
+                            }
                         } else {
-                            echo "Gagal mengubah password.";
+                            echo "Password baru tidak boleh sama dengan password lama.";
                         }
                     } else {
-                        echo "Password baru tidak boleh sama dengan password lama.";
+                        echo "Password salah.";
                     }
                 } else {
-                    echo "Password lama salah.";
+                    echo "Password tidak sesuai.";
                 }
             } else {
                 echo "User tidak ditemukan.";

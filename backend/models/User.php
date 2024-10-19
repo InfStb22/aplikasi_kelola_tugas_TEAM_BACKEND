@@ -31,7 +31,7 @@ class User
     {
         $query = "SELECT * FROM " . $this->table . " WHERE user_id = ? LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('i', $id); // 'i' untuk tipe integer
+        $stmt->bind_param('i', $id); 
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -46,8 +46,8 @@ class User
     {
         $query = "UPDATE " . $this->table . " SET user_password = ? WHERE user_id = ?";
         $stmt = $this->conn->prepare($query);
-        $hashed_password = password_hash($passwordNew, PASSWORD_DEFAULT); // Hash password baru
-        $stmt->bind_param('si', $hashed_password, $userId); // 'si' untuk string dan integer
-        return $stmt->execute(); // Return true jika update berhasil
+        $hashed_password = password_hash($passwordNew, PASSWORD_DEFAULT); 
+        $stmt->bind_param('si', $hashed_password, $userId); 
+        return $stmt->execute(); 
     }
 }

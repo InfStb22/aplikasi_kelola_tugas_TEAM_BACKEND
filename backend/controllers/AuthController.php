@@ -2,7 +2,7 @@
 
 namespace Backend\Controllers;
 
-require_once __DIR__ . '/../models/User.php'; // Include model
+require_once __DIR__ . '/../models/User.php'; 
 
 use Backend\Models\User;
 
@@ -12,7 +12,7 @@ class AuthController
 
     public function __construct($db)
     {
-        $this->db = $db; // Simpan koneksi database
+        $this->db = $db; 
     }
 
     public function login()
@@ -22,12 +22,12 @@ class AuthController
             $nim = $_POST['nim'];
             $password = $_POST['password'];
         
-            // Validasi input dasar
+            
             if (empty($nim) || empty($password)) {
                 die("NIM atau password tidak boleh kosong.");
             }
 
-            // Instansiasi model User, sambil mengirimkan koneksi $this->db
+            
             $userModel = new User($this->db);
             $user = $userModel->getUserByNim($nim);
             
@@ -35,7 +35,7 @@ class AuthController
                 $hashed_password = $user['user_password'];
                 
                 if (password_verify($password, $hashed_password)) {
-                    // Login berhasil
+                    
                     $_SESSION['users'] = $user['user_id'];
                     header('Location: dashboard.php');
                     exit();

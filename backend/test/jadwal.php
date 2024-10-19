@@ -26,14 +26,21 @@
 </head>
 <body>
     <h1>Jadwal</h1>
+    <a href="dashboard.php">dashboard</a>
+    <a href="jadwal.php">Jadwal</a>
+    <a href="tugas.php">Tugas</a>
+    <a href="settings.php">Settings</a>
 
     <?php if ($jadwalControllerResultCount > 0): ?>
-        <ul>
-            <?php foreach ($jadwalControllerResultData as $jadwal): ?>
-                <li><?= $jadwal['hari_mata_kuliah'] . " - " . $jadwal['waktu_mata_kuliah'] ?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
+        <?php foreach ($jadwalControllerResultData as $index => $value ): ?>
+            <ul>
+    <li><strong>Nama Mata Kuliah:</strong> <?= htmlspecialchars($value['nama_mata_kuliah'], ENT_QUOTES, 'UTF-8') ?></li>
+    <li><strong>Dosen Mata Kuliah:</strong> <?= htmlspecialchars($value['dosen_mata_kuliah'], ENT_QUOTES, 'UTF-8') ?></li>
+    <li><strong>Hari:</strong> <?= htmlspecialchars($value['hari_mata_kuliah'], ENT_QUOTES, 'UTF-8') ?></li>
+    <li><strong>Waktu:</strong> <?= htmlspecialchars($value['waktu_mata_kuliah'], ENT_QUOTES, 'UTF-8') ?></li>
+</ul>
+        <?php endforeach; ?>
+    <?php else : ?>
         <p>Tidak ada jadwal tersedia.</p>
     <?php endif; ?>
     

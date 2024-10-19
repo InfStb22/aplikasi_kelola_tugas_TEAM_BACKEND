@@ -1,9 +1,15 @@
-<?php session_start(); ?>
-<?php $pageName = "user-setting"; ?>
-<?php $pageAccess = "users"; ?>
-<?php include ('../../db/connect.php'); ?>
-<?php include ('../../controllers/AuthController.php'); ?>
-<?php include ('../../controllers/SessionController.php'); ?>
+<?php
+$pageAccess = "users"; // Sesuaikan dengan akses halaman (non-login atau users)
+require '../db/connect.php'; 
+require '../controllers/AuthController.php';
+require '../controllers/SessionController.php'; 
+
+use Backend\Controllers\AuthController;
+use Backend\Controllers\SessionController;
+
+// Panggil SessionController untuk mengecek akses
+SessionController::checkAccess($pageAccess);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,5 +20,12 @@
 </head>
 <body>
     <h1>SETTINGS</h1>
+    <a href="dashboard.php">dashboard</a>
+    <a href="jadwal.php">Jadwal</a>
+    <a href="tugas.php">Tugas</a>
+    <a href="settings.php">Settings</a>
+    <br>
+    <a href="logout.php">Logout</a>
+    <a href="ubah-password.php">Ganti Password</a>
 </body>
 </html>

@@ -17,7 +17,7 @@ class TugasController
 
     public function getTableTugas()
     {
-        
+        setlocale(LC_TIME, 'id_ID.utf8');
         $tugasModel = new Tugas($this->conn);
         return $tugasModel->getTableTugas(); 
     }

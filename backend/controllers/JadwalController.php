@@ -17,7 +17,6 @@ class JadwalController
 
     public function getTableJadwal()
     {
-        
         $jadwalModel = new Jadwal($this->conn);
         return $jadwalModel->getTableJadwal(); 
     }
