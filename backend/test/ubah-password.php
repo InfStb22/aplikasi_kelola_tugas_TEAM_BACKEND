@@ -37,7 +37,7 @@ $usersController->gantiUserPassword();
         <input type="password" name="password_new" required>
         <p>KORFIRMASI PASSWORD BARU</p>
         <input type="password" name="password_new_confirm" required>
-        <button type="submit" name="ubah_password">Ubah Password</button>
+        <button type="submit" name="ganti_password">Ubah Password</button>
     </form>
 </body>
 </html>

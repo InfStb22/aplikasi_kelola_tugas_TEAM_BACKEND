@@ -57,10 +57,8 @@ class Tugas
                 $namaHariInggris = date('l', $timestamp);
                 $row['hari'] = $hari[$namaHariInggris];
     
-                // Menambahkan variabel bulan dalam format yang lebih rapi
                 $row['bulan'] = $bulan[date('n', $timestamp)];
     
-                // Memformat tanggal menjadi string dengan bulan dalam bahasa Indonesia
                 $row['dateline_tugas'] = date('d', $timestamp) . ' ' . $row['bulan'] . ' ' . date('Y', $timestamp);
     
                 if ($timestamp > $today) {
@@ -78,7 +76,25 @@ class Tugas
     
         return ['getTableTugasCount' => $getTableTugasCount, 'getTableTugasdata' => $getTableTugasData];
     }
+
+    public function getDosenByMataKuliah($nama_mata_kuliah) {
+        $sql = "SELECT dosen_mata_kuliah FROM jadwal WHERE nama_mata_kuliah = ?";
+        
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt === false) {
+            die('Prepare failed: ' . htmlspecialchars($this->conn->error, ENT_QUOTES, 'UTF-8'));
+        }
     
-
-
+        $stmt->bind_param('s', $nama_mata_kuliah);  
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return htmlspecialchars($row['dosen_mata_kuliah'], ENT_QUOTES, 'UTF-8');
+        } else {
+            return "Dosen tidak Diketahui";
+        }
+    }
 }

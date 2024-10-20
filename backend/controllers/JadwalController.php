@@ -18,7 +18,16 @@ class JadwalController
     public function getTableJadwal()
     {
         $jadwalModel = new Jadwal($this->conn);
-        return $jadwalModel->getTableJadwal(); 
+        $result = $jadwalModel->getTableJadwal(); 
+
+        // Group data by 'hari_mata_kuliah'
+        $groupedByHari = [];
+        foreach ($result['getTableJadwaldata'] as $jadwal) {
+            $groupedByHari[$jadwal['hari_mata_kuliah']][] = $jadwal;
+        }
+
+        // Return grouped data to view
+        return ['getTableJadwalCount' => $result['getTableJadwalCount'], 'getTableJadwalGroupedByHari' => $groupedByHari];
     }
 
     

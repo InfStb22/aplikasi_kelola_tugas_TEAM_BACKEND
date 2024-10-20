@@ -48,7 +48,7 @@ class UsersController
 
     public function gantiUserPassword()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ubah_password'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ganti_password'])) {
 
             if (!isset($_SESSION)) {
                 header('Location: login.php');
@@ -60,43 +60,70 @@ class UsersController
             $passwordNew = $_POST['password_new'];
             $passwordNewConfirm = $_POST['password_new_confirm'];
 
-            
             if (empty($passwordOld) || empty($passwordNew)) {
-                die("Password tidak boleh kosong.");
+                $_SESSION['swal_message'] = json_encode([
+                    'title' => 'Error!',
+                    'text' => 'Password tidak boleh kosong.',
+                    'icon' => 'error'
+                ]);
+                return;
             }
 
-            
             $userModel = new User($this->conn);
             $user = $userModel->getUserById($userId);
 
             if ($user) {
                 $hashed_password = $user['user_password'];
 
-                if ($passwordNew == $passwordNewConfirm){
-                
+                if ($passwordNew == $passwordNewConfirm) {
                     if (password_verify($passwordOld, $hashed_password)) {
-                        
                         if (!password_verify($passwordNew, $hashed_password)) {
-                            
                             $updateSuccess = $userModel->updatePassword($userId, $passwordNew);
-                            
+
                             if ($updateSuccess) {
-                                echo "Password berhasil diubah.";
+                                $_SESSION['swal_message'] = json_encode([
+                                    'title' => 'Berhasil!',
+                                    'text' => 'Password berhasil diubah.',
+                                    'icon' => 'success',
+                                    'redirect' => 'logout.php'  
+                                ]);
+                                return;
                             } else {
-                                echo "Gagal mengubah password.";
+                                $_SESSION['swal_message'] = json_encode([
+                                    'title' => 'Gagal!',
+                                    'text' => 'Gagal mengubah password.',
+                                    'icon' => 'error'
+                                ]);
                             }
                         } else {
-                            echo "Password baru tidak boleh sama dengan password lama.";
+                            $_SESSION['swal_message'] = json_encode([
+                                'title' => 'Peringatan!',
+                                'text' => 'Password baru tidak boleh sama dengan password lama.',
+                                'icon' => 'warning'
+                            ]);
                         }
                     } else {
-                        echo "Password salah.";
+                        $_SESSION['swal_message'] = json_encode([
+                            'title' => 'Error!',
+                            'text' => 'Password lama salah.',
+                            'icon' => 'error'
+                        ]);
                     }
                 } else {
-                    echo "Password tidak sesuai.";
+                    $_SESSION['swal_message'] = json_encode([
+                        'title' => 'Error!',
+                        'text' => 'Password baru tidak sesuai dengan konfirmasi.',
+                        'icon' => 'error'
+                    ]);
                 }
             } else {
-                echo "User tidak ditemukan.";
+                $_SESSION['swal_message'] = json_encode([
+                    'title' => 'Error!',
+                    'text' => 'User tidak ditemukan.',
+                    'icon' => 'error'
+                ]);
             }
         }
     }
+
 }

@@ -1,5 +1,5 @@
 <?php
-$pageAccess = "non-login"; // Sesuaikan dengan akses halaman (non-login atau users)
+$pageAccess = "non-login"; 
 require '../db/connect.php'; 
 require '../controllers/AuthController.php';
 require '../controllers/SessionController.php'; 
@@ -7,7 +7,7 @@ require '../controllers/SessionController.php';
 use Backend\Controllers\AuthController;
 use Backend\Controllers\SessionController;
 
-// Panggil SessionController untuk mengecek akses
+
 SessionController::checkAccess($pageAccess);
 
 $authController = new AuthController($conn);

@@ -22,5 +22,8 @@ class TugasController
         return $tugasModel->getTableTugas(); 
     }
 
-    
+    public function getDosen($nama_mata_kuliah) {
+        $tugasModel = new Tugas($this->conn); // Inisialisasi tugasModel di sini
+        return $tugasModel->getDosenByMataKuliah($nama_mata_kuliah); // Menggunakan objek $tugasModel
+    }
 }
